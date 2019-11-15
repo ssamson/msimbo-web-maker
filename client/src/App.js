@@ -1,0 +1,85 @@
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// User Components
+import Login from "./components/user/Login";
+import Register from "./components/user/Register";
+import Profile  from "./components/user/Profile";
+// Website Components
+import WebsiteList from "./components/website/WebsiteList";
+import WebsiteNew from "./components/website/WebsiteNew";
+import WebsiteEdit from "./components/website/WebsiteEdit";
+// Page Components
+import PageList from "./components/page/PageList";
+import PageNew from "./components/page/PageNew";
+import PageEdit from "./components/page/PageEdit";
+
+// Widget Components
+import WidgetList from "./components/widget/WidgetList";
+import WidgetChooser from "./components/widget/WidgetChooser";
+import WidgetEdit from "./components/widget/WidgetEdit";
+
+function App() {
+
+  // user data
+  const [users, setUsers] = useState([
+    {
+      _id: "123",
+      username: "alice",
+      password: "alice",
+      firstName: "Alice",
+      lastName: "Wonder",
+      email: "alice@gmail.com"
+    },
+    {
+      _id: "234",
+      username: "bob",
+      password: "bob",
+      firstName: "Bob",
+      lastName: "Marley",
+      email: "bob@whatever.com"
+    },
+    {
+      _id: "345",
+      username: "charly", 
+      password: "charly", 
+      firstName: "Charly", 
+      lastName: "Garcia", 
+      email: "charly@ulem.com"
+    },
+    {
+      _id: "456", 
+      username: "shiyu", 
+      password: "shiyu", 
+      firstName: "Shiyu", 
+      lastName: "Wang", 
+      email: "swang@ulem.org"
+    }
+    ]);
+
+    function login(username, password) {
+
+    }
+    
+  return (
+    <Router>
+      <Switch>
+      <Route exact path="/login" component={Login}></Route>
+      <Route exact path="/register" component={Register}></Route>
+      <Route exact path="/user/:uid" component={Profile}></Route>
+      <Route exact path="/user/:uid/website" component={WebsiteList}></Route>
+      <Route exact path="/user/:uid/website/new" component={WebsiteNew}></Route>
+      <Route exact path="/user/:uid/website/:wid" component={WebsiteEdit}></Route>
+      <Route exact path="/user/:uid/website/:wid/page" component={PageList}></Route>
+      <Route exact path="/user/:uid/website/:wid/page/new" component={PageNew}></Route>
+      <Route exact path="/user/:uid/website/:wid/page/:pid" component={PageEdit}></Route>
+      <Route exact path="/user/:uid/website/:wid/page/:pid/widget" component={WidgetList}></Route>
+      <Route exact path="/user/:uid/website/:wid/page/:pid/widget/new" component={WidgetChooser}></Route>
+      <Route exact path="/user/:uid/website/:wid/page/:pid/widget/:wgid" component={WidgetEdit}></Route>
+      <Route path="/" component={Login}></Route>
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
