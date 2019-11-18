@@ -1,10 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
 
 export default function WidgetEdit() {
-    return (
-        <div>
-            
-        </div>
-    );
+  return <div></div>;
 }
