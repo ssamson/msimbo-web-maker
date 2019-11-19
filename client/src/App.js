@@ -13,7 +13,6 @@ import WebsiteEdit from "./components/website/WebsiteEdit";
 import PageList from "./components/page/PageList";
 import PageNew from "./components/page/PageNew";
 import PageEdit from "./components/page/PageEdit";
-
 // Widget Components
 import WidgetList from "./components/widget/WidgetList";
 import WidgetChooser from "./components/widget/WidgetChooser";
@@ -56,6 +55,21 @@ function App() {
     }
   ]);
 
+  const [websites, setWebsites] = useState([
+    { _id: "123", name: "Facebook", developerId: "456", description: "Lorem" },
+    { _id: "234", name: "Tweeter", developerId: "456", description: "Lorem" },
+    { _id: "456", name: "Msimbo", developerId: "456", description: "Lorem" },
+    { _id: "890", name: "Go", developerId: "123", description: "Lorem" },
+    {
+      _id: "567",
+      name: "Tic Tac Toe",
+      developerId: "123",
+      description: "Lorem"
+    },
+    { _id: "678", name: "Checkers", developerId: "123", description: "Lorem" },
+    { _id: "789", name: "Chess", developerId: "234", description: "Lorem" }
+  ]);
+
   // Add a new user into users
   const addUser = user => {
     setUsers([...users, user]);
@@ -74,6 +88,50 @@ function App() {
     );
   };
 
+  // get websites by usr id
+  const getWebsites = uid => {
+    const curWebs = [];
+    for (let website of websites) {
+      if (website.developerId === uid) {
+        curWebs.push(website);
+      }
+    }
+    return curWebs;
+  };
+
+  // getWebsite
+
+  const getWebsite = wid => {
+    for (let website of websites) {
+      if (website._id === wid) {
+        return website;
+      }
+    }
+  };
+
+  // add new website
+  const addWebsite = newWeb => {
+    setWebsites([...websites, newWeb]);
+  };
+
+  // remove website
+  const removeWebsite = wid => {
+    setWebsites(websites.filter(website => website._id !== wid));
+  };
+
+  // update website
+  const updateWebsite = newWeb => {
+    setWebsites(
+      websites.map(website => {
+        if (website._id === newWeb._id) {
+          return newWeb;
+        } else {
+          return website;
+        }
+      })
+    );
+  };
+
   return (
     <Router>
       <Switch>
@@ -86,17 +144,20 @@ function App() {
         <Route exact path="/user/:uid">
           <Profile users={users} updateUser={updateUser} />
         </Route>
-        <Route exact path="/user/:uid/website" component={WebsiteList}></Route>
-        <Route
-          exact
-          path="/user/:uid/website/new"
-          component={WebsiteNew}
-        ></Route>
-        <Route
-          exact
-          path="/user/:uid/website/:wid"
-          component={WebsiteEdit}
-        ></Route>
+        <Route exact path="/user/:uid/website">
+          <WebsiteList getWebsites={getWebsites} />
+        </Route>
+        <Route exact path="/user/:uid/website/new">
+          <WebsiteNew getWebsites={getWebsites} addWebsite={addWebsite} />>
+        </Route>
+        <Route exact path="/user/:uid/website/:wid">
+          <WebsiteEdit
+            getWebsites={getWebsites}
+            getWebsite={getWebsite}
+            removeWebsite={removeWebsite}
+            updateWebsite={updateWebsite}
+          />
+        </Route>
         <Route
           exact
           path="/user/:uid/website/:wid/page"
