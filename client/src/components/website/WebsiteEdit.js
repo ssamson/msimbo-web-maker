@@ -20,7 +20,7 @@ export default function WebsiteEdit(props) {
   }, [params.uid, props, params.wid]);
 
   const remove = () => {
-    props.removeWebsites(params.wid);
+    props.removeWebsite(params.wid);
     history.push(`/user/${params.uid}/website`);
   };
 
