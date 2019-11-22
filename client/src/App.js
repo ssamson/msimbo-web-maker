@@ -111,7 +111,7 @@ function App() {
       widgetType: "YOUTUBE",
       pageId: "321",
       width: "100%",
-      url: "https://youtu.be/AM2Ivdi9c4E"
+      url: "https://www.youtube.com/embed/AM2Ivdi9c4E"
     }
   ]);
 
@@ -214,12 +214,12 @@ function App() {
     );
   };
 
-  // Get widgets by page id
+  // Get widgets by page id (retrieves the widgets in local widgets array whose pageId matches the parameter pageId)
   const getWidgets = pid => {
     return widgets.filter(widget => widget.pageId === pid);
   };
 
-  // Get Widget by widget id
+  // Get Widget by widget id (retrieves the widget in local widgets array whose _id matches the widgetId parameter)
   const getWidget = wgid => {
     for (let widget of widgets) {
       if (widget._id === wgid) {
@@ -228,17 +228,17 @@ function App() {
     }
   };
 
-  // add Widget
+  // Add Widget (adds the widget parameter instance to the local widgets array. The new widget's pageId is set to the pageId parameter)
   const addWidget = newWidget => {
     setWidgets([...widgets, newWidget]);
   };
 
-  // remove Widget
+  // Remove Widget (removes the widget from local widgets array whose _id matches the widgetId parameter)
   const removeWidget = wgid => {
     setWidgets(widgets.filter(widget => widget._id !== wgid));
   };
 
-  // update Widget
+  // Update Widget (updates the widget in local widgets array whose _id matches the widgetId parameter)
   const updateWidget = newWidget => {
     setWidgets(
       widgets.map(widget => {
