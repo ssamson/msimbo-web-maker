@@ -228,18 +228,13 @@ function App() {
           <Profile />
         </Route>
         <Route exact path="/user/:uid/website">
-          <WebsiteList getWebsites={getWebsites} />
+          <WebsiteList />
         </Route>
         <Route exact path="/user/:uid/website/new">
-          <WebsiteNew getWebsites={getWebsites} addWebsite={addWebsite} />>
+          <WebsiteNew />>
         </Route>
         <Route exact path="/user/:uid/website/:wid">
-          <WebsiteEdit
-            getWebsites={getWebsites}
-            getWebsite={getWebsite}
-            removeWebsite={removeWebsite}
-            updateWebsite={updateWebsite}
-          />
+          <WebsiteEdit />
         </Route>
         <Route exact path="/user/:uid/website/:wid/page">
           <PageList getPages={getPages} />
