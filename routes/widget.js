@@ -43,7 +43,7 @@ const widgets = [
 //create new widget
 router.post("/", (req, res) => {
   const newWidget = req.body;
-  widgets.push(newWidgets);
+  widgets.push(newWidget);
   res.json(newWidget);
 });
 
@@ -52,7 +52,7 @@ router.get("/page/:pid", (req, res) => {
   const pid = req.params.pid;
   const currentWidgets = [];
   for (let i = 0; i < widgets.length; i++) {
-    if (widgets[i].pageID === pid) {
+    if (widgets[i].pageId === pid) {
       currentWidgets.push(widgets[i]);
     }
   }
