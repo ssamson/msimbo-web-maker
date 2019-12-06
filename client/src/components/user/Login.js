@@ -27,7 +27,7 @@ export default function Login(props) {
       //   }
       // }
       // we can't find user
-      alert("Invalid credential, please try it again.");
+      alert("Invalid credential, please try again.");
     }
   }
 
