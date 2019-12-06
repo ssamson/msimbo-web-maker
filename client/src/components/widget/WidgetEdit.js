@@ -16,7 +16,7 @@ export default function WidgetEdit(props) {
   }, []);
 
   const getWidget = async () => {
-    const res = await axios.get(`/api/widget/$(params.wgid)`);
+    const res = await axios.get(`/api/widget/${params.wgid}`);
     setWidget(res.data);
   };
 
