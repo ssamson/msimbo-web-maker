@@ -1,9 +1,12 @@
 // import express library
 const express = require("express");
 const path = require("path");
-
+const connectDB = require("./config/db");
 // init express
 const app = express();
+
+// Connect DB
+connectDB();
 
 app.use(express.json());
 

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const User = require("../models/User");
+
 const users = [
   {
     _id: "123",
@@ -37,27 +39,28 @@ const users = [
 ];
 
 // Find user by credentials
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   // get username and password that user enter
   const username = req.query.username;
   const password = req.query.password;
   let user;
   // if username and password are sent from client
   if (username && password) {
-    for (let i = 0; i < users.length; i++) {
-      // if we found a user with given username and password
-      if (users[i].username === username && users[i].password === password) {
-        user = users[i];
-      }
-    }
+    // for (let i = 0; i < users.length; i++) {
+    user = await User.findOne({ username: username, password: password });
+    // if we found a user with given username and password
+    //   if (users[i].username === username && users[i].password === password) {
+    //     user = users[i];
+    //   }
+    // }
     // if the username is taken
   } else if (username) {
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username) {
-        user = users[i];
-      }
-    }
+    user = await User.findOne({ username: username });
+    // for (let i = 0; i < users.length; i++) {
+    //   if (users[i].username === username) {
+    //     user = users[i];
   }
+
   // if user is not existing
   if (!user) {
     user = null;
@@ -67,32 +70,52 @@ router.get("/", (req, res) => {
 });
 
 // Create new user
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const newUser = req.body;
-  users.push(newUser);
-  res.json(newUser);
+
+  // const userToSave = new User({
+  //   username: newUser.username,
+  //   password: newUser.password,
+  //   firstName: newUser.firstName,
+  //   lastName: newUser.lastName,
+  //   email: newUser.email
+  // });
+  const userToSave = newUser({ ...req.body });
+  const user = await userToSave.save();
+  // const user = await newUser.save();
+
+  // if (newUser.password.length < 6) {
+  //   res.json("password is too short");
+  // }
+
+  // save to database
+  // users.push(newUser);
+  // res.json(newUser);
+  res.json(user);
 });
 
 // Find user by id
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
-  let user = null;
-  for (let i = 0; i < users.length; i++) {
-    if (users[i]._id === id) {
-      user = users[i];
-    }
-  }
+  const user = await User.findById(id);
+  // let user = null;
+  // for (let i = 0; i < users.length; i++) {
+  //   if (users[i]._id === id) {
+  //     user = users[i];
+  //   }
+  // }
   res.json(user);
 });
 
 // Update user
-router.put("/", (req, res) => {
+router.put("/", async (req, res) => {
   const newUser = req.body;
-  for (let i = 0; i < users.length; i++) {
-    if (users[i]._id === newUser._id) {
-      users[i] = newUser;
-    }
-  }
+  await User.findByIdAndUpdate(newUser._id, newUser);
+  // for (let i = 0; i < users.length; i++) {
+  //   if (users[i]._id === newUser._id) {
+  //     users[i] = newUser;
+  //   }
+  // }
   res.json(newUser);
 });
 // send hello to client
