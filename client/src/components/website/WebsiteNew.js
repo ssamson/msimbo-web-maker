@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import uuid from "uuid";
 import axios from "axios";
 
 export default function WebsiteNew(props) {
@@ -29,7 +28,7 @@ export default function WebsiteNew(props) {
   const submit = async e => {
     e.preventDefault();
     const newWeb = {
-      _id: uuid.v4(),
+      // _id: uuid.v4(),
       name: name,
       description: description,
       developerId: params.uid
