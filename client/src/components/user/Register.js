@@ -37,10 +37,10 @@ export default function Register(props) {
       lastName: "",
       email: ""
     };
-    await axios.post("/api/user", newUser);
+    const res2 = await axios.post("/api/user", newUser);
     console.log(newUser);
     // Navigate user into this profile
-    history.push(`/user/${newUser._id}`);
+    history.push(`/user/${res2.data._id}`);
   };
 
   return (
