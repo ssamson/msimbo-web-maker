@@ -2,15 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Website = require("../models/Website");
 
-const websites = [
-  { _id: "123", name: "Facebook", developerId: "456", description: "Lorem" },
-  { _id: "234", name: "Tweeter", developerId: "456", description: "Lorem" },
-  { _id: "456", name: "Msimbo", developerId: "456", description: "Lorem" },
-  { _id: "890", name: "Go", developerId: "123", description: "Lorem" },
-  { _id: "567", name: "Tic Tac Toe", developerId: "123", description: "Lorem" },
-  { _id: "678", name: "Checkers", developerId: "123", description: "Lorem" },
-  { _id: "789", name: "Chess", developerId: "234", description: "Lorem" }
-];
+// const websites = [
+//   { _id: "123", name: "Facebook", developerId: "456", description: "Lorem" },
+//   { _id: "234", name: "Tweeter", developerId: "456", description: "Lorem" },
+//   { _id: "456", name: "Msimbo", developerId: "456", description: "Lorem" },
+//   { _id: "890", name: "Go", developerId: "123", description: "Lorem" },
+//   { _id: "567", name: "Tic Tac Toe", developerId: "123", description: "Lorem" },
+//   { _id: "678", name: "Checkers", developerId: "123", description: "Lorem" },
+//   { _id: "789", name: "Chess", developerId: "234", description: "Lorem" }
+// ];
 
 // Create website
 router.post("/", async (req, res) => {
@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
   const website = await newWebsite.save();
   // const newWebsite = req.body;
   // websites.push(newWebsite);
-  res.json(Website);
+  res.json(website);
 });
 
 // Get all websites by given user id
@@ -36,7 +36,7 @@ router.get("/user/:uid", async (req, res) => {
 // Get website by given id
 router.get("/:wid", async (req, res) => {
   const wid = req.params.wid;
-  const websites = await Website.findById(wid);
+  const website = await Website.findById(wid);
   // let website = null;
   // for (let i = 0; i < websites.length; i++) {
   //   if (websites[i]._id === wid) {
@@ -66,7 +66,7 @@ router.delete("/:wid", async (req, res) => {
   //     websites.splice(i, 1);
   //   }
   // }
-  res.json(websites);
+  res.json(null);
 });
 
 module.exports = router;
