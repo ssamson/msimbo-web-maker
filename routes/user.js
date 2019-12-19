@@ -71,8 +71,6 @@ router.get("/", async (req, res) => {
 
 // Create new user
 router.post("/", async (req, res) => {
-  const newUser = req.body;
-
   // const userToSave = new User({
   //   username: newUser.username,
   //   password: newUser.password,
@@ -80,7 +78,7 @@ router.post("/", async (req, res) => {
   //   lastName: newUser.lastName,
   //   email: newUser.email
   // });
-  const userToSave = newUser({ ...req.body });
+  const userToSave = new User({ ...req.body });
   const user = await userToSave.save();
   // const user = await newUser.save();
 
