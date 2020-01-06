@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function Profile(props) {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -53,6 +54,12 @@ export default function Profile(props) {
     await axios.put("/api/user", newUser);
 
     alert("user info is updated!");
+  };
+
+  const logout = () => {
+    delete axios.defaults.headers.common["x-auth-token"];
+    localStorage.removeItem("token");
+    history.push("/");
   };
 
   return (

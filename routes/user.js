@@ -106,32 +106,62 @@ router.get("/load", auth, async (req, res) => {
 // res.json(user);
 // });
 
+// Check if username is taken
+router.get("/", async (req, res) => {
+  // get username and password
+  const username = req.query.username;
+  let user = await User.findOne({ username: username });
+  // if user is not existing
+  if (!user) {
+    user = null;
+  }
+  // send user back to client
+  res.json(user);
+});
+
 // Create new user
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
   const newUser = new User({ ...req.body });
   const user = await newUser.save();
-  console.log(user);
-  res.json(user);
-  // const userToSave = new User({
-  //   username: newUser.username,
-  //   password: newUser.password,
-  //   firstName: newUser.firstName,
-  //   lastName: newUser.lastName,
-  //   email: newUser.email
-  // });
-  // const userToSave = new User({ ...req.body });
-  // const user = await userToSave.save();
-  // const user = await newUser.save();
-
-  // if (newUser.password.length < 6) {
-  //   res.json("password is too short");
-  // }
-
-  // save to database
-  // users.push(newUser);
-  // res.json(newUser);
-  // res.json(user);
+  const payload = {
+    user: {
+      id: user.id
+    }
+  };
+  jwt.sign(
+    payload,
+    config.get("jwtSecret"),
+    {
+      expiresIn: "1d"
+    },
+    (err, token) => {
+      if (err) {
+        throw err;
+      }
+      res.json({ token, user });
+    }
+  );
 });
+
+// const userToSave = new User({
+//   username: newUser.username,
+//   password: newUser.password,
+//   firstName: newUser.firstName,
+//   lastName: newUser.lastName,
+//   email: newUser.email
+// });
+// const userToSave = new User({ ...req.body });
+// const user = await userToSave.save();
+// const user = await newUser.save();
+
+// if (newUser.password.length < 6) {
+//   res.json("password is too short");
+// }
+
+// save to database
+// users.push(newUser);
+// res.json(newUser);
+// res.json(user);
 
 // Find user by id
 router.get("/:id", async (req, res) => {

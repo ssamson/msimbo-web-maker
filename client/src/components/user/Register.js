@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function Register(props) {
-  const [username, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
@@ -28,7 +28,7 @@ export default function Register(props) {
     //     return;
     //   }
     // }
-    // Add new users into users
+    // Add new users into database
     const newUser = {
       // _id: uuid.v4(),
       username: username,
@@ -37,10 +37,10 @@ export default function Register(props) {
       lastName: "",
       email: ""
     };
-    const res2 = await axios.post("/api/user", newUser);
-    console.log(newUser);
+    const res2 = await axios.post("/api/user/register", newUser);
+    localStorage.setItem("token", res2.data.token);
     // Navigate user into this profile
-    history.push(`/user/${res2.data._id}`);
+    history.push(`/user/${res2.data.user._id}`);
   };
 
   return (
@@ -55,7 +55,7 @@ export default function Register(props) {
             placeholder="Username"
             // id="username"
             value={username}
-            onChange={e => setUserName(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
           />
         </div>
         <div className="form-group">
