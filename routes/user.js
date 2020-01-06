@@ -1,8 +1,45 @@
 const express = require("express");
 const router = express.Router();
-
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const config = require("config");
+const auth = require("../middleware/auth");
 
+// Login
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  let user = await User.findOne({ username: username, password: password });
+
+  if (!user) {
+    res.json(null);
+  } else {
+    const payload = {
+      user: {
+        id: user.id
+      }
+    };
+
+    jwt.sign(
+      payload,
+      config.get("jwtSecret"),
+      {
+        expiresIn: "1d"
+      },
+      (error, token) => {
+        if (error) {
+          throw error;
+        }
+        res.json({ token, user });
+      }
+    );
+  }
+});
+
+// Load user
+router.get("/load", auth, async (req, res) => {
+  const user = await User.findById(req.user.id);
+  res.json(user);
+});
 // const users = [
 //   {
 //     _id: "123",
@@ -39,38 +76,42 @@ const User = require("../models/User");
 // ];
 
 // Find user by credentials
-router.get("/", async (req, res) => {
-  // get username and password that user enter
-  const username = req.query.username;
-  const password = req.query.password;
-  let user;
-  // if username and password are sent from client
-  if (username && password) {
-    // for (let i = 0; i < users.length; i++) {
-    user = await User.findOne({ username: username, password: password });
-    // if we found a user with given username and password
-    //   if (users[i].username === username && users[i].password === password) {
-    //     user = users[i];
-    //   }
-    // }
-    // if the username is taken
-  } else if (username) {
-    user = await User.findOne({ username: username });
-    // for (let i = 0; i < users.length; i++) {
-    //   if (users[i].username === username) {
-    //     user = users[i];
-  }
+// router.get("/", async (req, res) => {
+// get username and password that user enter
+// const username = req.query.username;
+// const password = req.query.password;
+// let user;
+// if username and password are sent from client
+// if (username && password) {
+// for (let i = 0; i < users.length; i++) {
+// user = await User.findOne({ username: username, password: password });
+// if we found a user with given username and password
+//   if (users[i].username === username && users[i].password === password) {
+//     user = users[i];
+//   }
+// }
+// if the username is taken
+// } else if (username) {
+// user = await User.findOne({ username: username });
+// for (let i = 0; i < users.length; i++) {
+//   if (users[i].username === username) {
+//     user = users[i];
+// }
 
-  // if user is not existing
-  if (!user) {
-    user = null;
-  }
-  // send user back to client
-  res.json(user);
-});
+// if user is not existing
+// if (!user) {
+// user = null;
+// }
+// send user back to client
+// res.json(user);
+// });
 
 // Create new user
 router.post("/", async (req, res) => {
+  const newUser = new User({ ...req.body });
+  const user = await newUser.save();
+  console.log(user);
+  res.json(user);
   // const userToSave = new User({
   //   username: newUser.username,
   //   password: newUser.password,
@@ -78,8 +119,8 @@ router.post("/", async (req, res) => {
   //   lastName: newUser.lastName,
   //   email: newUser.email
   // });
-  const userToSave = new User({ ...req.body });
-  const user = await userToSave.save();
+  // const userToSave = new User({ ...req.body });
+  // const user = await userToSave.save();
   // const user = await newUser.save();
 
   // if (newUser.password.length < 6) {
@@ -89,7 +130,7 @@ router.post("/", async (req, res) => {
   // save to database
   // users.push(newUser);
   // res.json(newUser);
-  res.json(user);
+  // res.json(user);
 });
 
 // Find user by id
@@ -102,6 +143,7 @@ router.get("/:id", async (req, res) => {
   //     user = users[i];
   //   }
   // }
+  console.log(user);
   res.json(user);
 });
 
